@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1> look mom i have mongo database !!!!</h1>
+    <form action="/addProduct"   method="POST"> 
+     <input type="text" placeholder="name" name="name">
+     <input type="text" placeholder="price" name="price">
+     <input type="text" placeholder="quantity" name="quantity">
+     <button type="submit"> add product</button>
+       </form>
+       <div id="product">
+
+       </div>
+       <script>
+        function loadProduct (){
+           
+         fetch("/products")
+         .then(res=> res.json())
+         .then (products=>{
+           console.log(products)
+           const container = document.getElementById("product")
+           products.forEach(element => {
+             const p = document.createElement("p")
+             p.innerHTML = ` <strong> name: ${element.name} </strong> -- price: ${element.price} quantity: ${element.quantity}
+             <button onclick="deleteProduct('${element._id}') "> Delete </button>`
+             container.appendChild(p)
+           });
+             
+          })
+        }
+        loadProduct();
+        function deleteProduct (id){
+         fetch(`/delete/${id}`,{
+           method:"DELETE",
+         })
+         .then(res.res.json())
+         .then(result=>{
+           console.log("deleted successfully")
+         })
+        }
+         </script>
+      </body>
+        </html>
